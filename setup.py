@@ -11,11 +11,20 @@ def read(filename):
     return open(os.path.join(os.path.dirname(__file__), filename)).read()
 
 
+__version__ = None
+with open(os.path.join(os.path.dirname(__file__), 'hashlib_additional', '__init__.py')) as f:
+    for line in f:
+        if not line.startswith('__version__ = '):
+            continue
+        __version__ = eval(line.rsplit(None, 1)[-1])
+        break
+
+
 setup(
     name='hashlib-additional',
     description='Additional hashlib-compatible hashing digests',
     long_description=read('README'),
-    version='1.0.1',
+    version=__version__,
     license='BSD',
     platforms=['Unix'],
     author='Ryan Finnie',
@@ -33,4 +42,3 @@ setup(
     ],
     test_suite='tests',
 )
-
