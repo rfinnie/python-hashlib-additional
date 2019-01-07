@@ -94,6 +94,13 @@ class TestBsd(unittest.TestCase, BaseTest):
     foobar_digest = b'\x00\xd3'
 
 
+class TestCksum(unittest.TestCase, BaseTest):
+    name = 'cksum'
+    empty_digest = b'\xff\xff\xff\xff'
+    foo_digest = b'\x93;\x9e\x91'
+    foobar_digest = b'\x9b]\x95\xd6'
+
+
 class TestCrc32(unittest.TestCase, BaseTest):
     name = 'crc32'
     empty_digest = b'\x00\x00\x00\x00'
@@ -113,6 +120,13 @@ class TestNull(unittest.TestCase, BaseTest):
             digest.digest(),
             b'\x00\x00\x00',
         )
+
+
+class TestSysv(unittest.TestCase, BaseTest):
+    name = 'sysv'
+    empty_digest = b'\x00\x00'
+    foo_digest = b'\x01D'
+    foobar_digest = b'\x02y'
 
 
 class TestTwoping(unittest.TestCase, BaseTest):

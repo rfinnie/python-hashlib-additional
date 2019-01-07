@@ -11,11 +11,15 @@ It implements the following digests:
 * random - Always outputs random "hashes", with a configurable digest_size
 * crc32 - CRC32 digest, 4 byte digest_size
 * adler32 - Adler-32 digest, 4 byte digest_size
+* cksum - Unix cksum checksum, 4 byte digest_size
+* sysv - Unix System V checksum, 2 byte digest_size
 * bsd - BSD checksum, 2 byte digest_size
 * udp - UDP checksum, 2 byte digest_size
 * twoping - 2ping checksum, 2 byte digest_size
 
 Unless stated, all digest outputs are big-endian (network byte order).
+
+"sysv", "bsd" and "cksum" results are just the hash (in byte form), even though technically the full checksum (as returned by "sum" and "cksum") is comprised of the decimal hash and input length, separated by a space.
 
 ## Example
 
@@ -27,7 +31,7 @@ Unless stated, all digest outputs are big-endian (network byte order).
 '8c736521'
 
 >>> hashlib_additional.algorithms_available
-{'twoping', 'random', 'bsd', 'null', 'udp', 'crc32', 'adler32'}
+{'crc32', 'udp', 'null', 'adler32', 'twoping', 'cksum', 'random', 'bsd', 'sysv'}
 
 >>> digest = hashlib_additional.twoping(b'bar')
 >>> digest.digest()
