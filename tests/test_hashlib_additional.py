@@ -2,6 +2,7 @@
 
 import unittest
 import hashlib_additional
+import hashlib
 
 
 class BaseTest:
@@ -9,6 +10,7 @@ class BaseTest:
     empty_digest = b''
     foo_digest = b''
     foobar_digest = b''
+    large_digest = b''
 
     def test_empty(self):
         self.assertEqual(
@@ -79,19 +81,33 @@ class BaseTest:
             self.foo_digest,
         )
 
+    def test_large(self):
+        digest = hashlib_additional.new(self.name)
+        sha = hashlib.sha256()
+        for i in range(1024):
+            fragment = sha.digest()
+            digest.update(fragment)
+            sha.update(fragment)
+        self.assertEqual(
+            digest.digest(),
+            self.large_digest,
+        )
+
+
 
 class TestAdler32(unittest.TestCase, BaseTest):
     name = 'adler32'
     empty_digest = b'\x00\x00\x00\x01'
     foo_digest = b'\x02\x82\x01E'
     foobar_digest = b'\x08\xab\x02z'
-
+    large_digest = b'l9\xbe\xe2'
 
 class TestBsd(unittest.TestCase, BaseTest):
     name = 'bsd'
     empty_digest = b'\x00\x00'
     foo_digest = b'\x00\xc0'
     foobar_digest = b'\x00\xd3'
+    large_digest = b'S\x85'
 
 
 class TestCksum(unittest.TestCase, BaseTest):
@@ -99,6 +115,7 @@ class TestCksum(unittest.TestCase, BaseTest):
     empty_digest = b'\xff\xff\xff\xff'
     foo_digest = b'\x93;\x9e\x91'
     foobar_digest = b'\x9b]\x95\xd6'
+    large_digest = b'\xab\x1d\x12\xa7'
 
 
 class TestCrc32(unittest.TestCase, BaseTest):
@@ -106,6 +123,7 @@ class TestCrc32(unittest.TestCase, BaseTest):
     empty_digest = b'\x00\x00\x00\x00'
     foo_digest = b'\x8cse!'
     foobar_digest = b'\x9e\xf6\x1f\x95'
+    large_digest = b'\xd6\xec\x16\xac'
 
 
 class TestNull(unittest.TestCase, BaseTest):
@@ -113,6 +131,7 @@ class TestNull(unittest.TestCase, BaseTest):
     empty_digest = b'\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00'
     foo_digest = b'\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00'
     foobar_digest = b'\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00'
+    large_digest = b'\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00'
 
     def test_variable_digest_size(self):
         digest = hashlib_additional.new(self.name, b'foo', digest_size=3)
@@ -127,6 +146,7 @@ class TestSysv(unittest.TestCase, BaseTest):
     empty_digest = b'\x00\x00'
     foo_digest = b'\x01D'
     foobar_digest = b'\x02y'
+    large_digest = b'\xbbo'
 
 
 class TestTwoping(unittest.TestCase, BaseTest):
@@ -134,6 +154,7 @@ class TestTwoping(unittest.TestCase, BaseTest):
     empty_digest = b'\xff\xff'
     foo_digest = b'*\x90'
     foobar_digest = b'\xc8\xbb'
+    large_digest = b'A\x93'
 
 
 class TestUdp(unittest.TestCase, BaseTest):
@@ -141,6 +162,7 @@ class TestUdp(unittest.TestCase, BaseTest):
     empty_digest = b'\xff\xff'
     foo_digest = b'o\xd5'
     foobar_digest = b'D7'
+    large_digest = b'l\xbe'
 
 
 class TestRandom(unittest.TestCase):
