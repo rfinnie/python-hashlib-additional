@@ -1,6 +1,6 @@
-# hashlib_additional - Additional hashlib-compatible hashing digests
+# hashlib-additional - Additional hashlib-compatible hashing digests
 
-https://github.com/rfinnie/python-hashlib_additional
+https://github.com/rfinnie/python-hashlib-additional
 
 ## About
 

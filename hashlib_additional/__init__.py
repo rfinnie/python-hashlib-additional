@@ -29,7 +29,7 @@ import copy
 import random as _random
 
 
-__version__ = '1.0'
+__version__ = '1.0.1'
 
 
 class HASH:
@@ -209,7 +209,7 @@ class null(HASH):
 
 
 __algorithm_map = {}
-for obj in copy.copy(locals()).values():
+for obj in copy.copy(vars()).values():
     if type(obj) == type(HASH) and issubclass(obj, HASH) and obj != HASH:
         __algorithm_map[obj.name] = obj
 

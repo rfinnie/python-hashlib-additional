@@ -12,16 +12,16 @@ def read(filename):
 
 
 setup(
-    name='hashlib_additional',
+    name='hashlib-additional',
     description='Additional hashlib-compatible hashing digests',
     long_description=read('README'),
-    version='1.0',
+    version='1.0.1',
     license='BSD',
     platforms=['Unix'],
     author='Ryan Finnie',
     author_email='ryan@finnie.org',
-    url='https://github.com/rfinnie/python-hashlib_additional',
-    download_url='https://github.com/rfinnie/python-hashlib_additional',
+    url='https://github.com/rfinnie/python-hashlib-additional',
+    download_url='https://github.com/rfinnie/python-hashlib-additional',
     packages=find_packages(),
     classifiers=[
         'Development Status :: 5 - Production/Stable',
