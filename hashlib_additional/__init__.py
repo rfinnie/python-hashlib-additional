@@ -517,9 +517,9 @@ class Fletcher(HASH):
         assert self.digest_size == self.block_size * 2
         if self.digest_size == 2:
             pack_format = b">H"
-        if self.digest_size == 4:
+        elif self.digest_size == 4:
             pack_format = b">I"
-        if self.digest_size == 8:
+        elif self.digest_size == 8:
             pack_format = b">Q"
         return struct.pack(
             pack_format, ((self._checksum2 << (8 * self.block_size)) | self._checksum1)
