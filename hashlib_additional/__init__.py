@@ -484,6 +484,66 @@ class cksum(HASH):
         return struct.pack(b">I", (~checksum & 0xFFFFFFFF))
 
 
+class Fletcher(HASH):
+    _held_data = b""
+    digest_size = 2
+    block_size = 1
+    _checksum1 = 0
+    _checksum2 = 0
+
+    def update(self, data):
+        data = self._held_data + data
+
+        remainder_len = len(data) % self.block_size
+        if remainder_len:
+            self._held_data = data[0 - remainder_len :]
+            data = data[0 : 0 - remainder_len]
+        else:
+            self._held_data = b""
+
+        modulo = 2 ** (8 * self.block_size) - 1
+        for i in range(0, len(data), self.block_size):
+            c = 0
+            for ic in range(self.block_size):
+                c += data[i + ic] << (8 * ic)
+            self._checksum1 = (self._checksum1 + c) % modulo
+            self._checksum2 = (self._checksum2 + self._checksum1) % modulo
+
+    def digest(self):
+        if self._held_data:
+            self.update(bytes(self.block_size - len(self._held_data)))
+
+        assert self.digest_size in (2, 4, 8)
+        assert self.digest_size == self.block_size * 2
+        if self.digest_size == 2:
+            pack_format = b">H"
+        if self.digest_size == 4:
+            pack_format = b">I"
+        if self.digest_size == 8:
+            pack_format = b">Q"
+        return struct.pack(
+            pack_format, ((self._checksum2 << (8 * self.block_size)) | self._checksum1)
+        )
+
+
+class fletcher16(Fletcher):
+    name = "fletcher16"
+    digest_size = 2
+    block_size = 1
+
+
+class fletcher32(Fletcher):
+    name = "fletcher32"
+    digest_size = 4
+    block_size = 2
+
+
+class fletcher64(Fletcher):
+    name = "fletcher64"
+    digest_size = 8
+    block_size = 4
+
+
 class random(HASH):
     """Dummy random hash"""
 
@@ -519,7 +579,7 @@ class null(HASH):
 
 __algorithm_map = {}
 for obj in copy.copy(vars()).values():
-    if type(obj) == type(HASH) and issubclass(obj, HASH) and obj != HASH:
+    if type(obj) == type(HASH) and issubclass(obj, HASH) and obj.name != "hash":
         __algorithm_map[obj.name] = obj
 
 # For the moment, everything can be done using stdlib,

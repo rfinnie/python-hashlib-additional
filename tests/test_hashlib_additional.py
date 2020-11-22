@@ -187,6 +187,33 @@ class TestUdp(unittest.TestCase, BaseTest):
     large_digest = b"l\xbe"
 
 
+class TestFletcher16(unittest.TestCase, BaseTest):
+    name = "fletcher16"
+    empty_digest = b"\x00\x00"
+    foo_digest = b"\x81E"
+    foo_hexdigest = "8145"
+    foobar_digest = b"\xad{"
+    large_digest = b"\xe9+"
+
+
+class TestFletcher32(unittest.TestCase, BaseTest):
+    name = "fletcher32"
+    empty_digest = b"\x00\x00\x00\x00"
+    foo_digest = b"\xdf;o\xd5"
+    foo_hexdigest = "df3b6fd5"
+    foobar_digest = b"\x85sD7"
+    large_digest = b"\xd2Cl\xbe"
+
+
+class TestFletcher64(unittest.TestCase, BaseTest):
+    name = "fletcher64"
+    empty_digest = b"\x00\x00\x00\x00\x00\x00\x00\x00"
+    foo_digest = b"\x00oof\x00oof"
+    foo_hexdigest = "006f6f66006f6f66"
+    foobar_digest = b"\xc4\xdfQ-bo\xe1\xc7"
+    large_digest = b"L\xa6\x97&\xf5fwW"
+
+
 class TestRandom(unittest.TestCase):
     name = "random"
 
@@ -234,6 +261,9 @@ class TestHashlibAdditional(unittest.TestCase):
                 "bsd",
                 "cksum",
                 "crc32",
+                "fletcher16",
+                "fletcher32",
+                "fletcher64",
                 "null",
                 "random",
                 "sysv",

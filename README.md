@@ -12,6 +12,9 @@ It implements the following digests:
 * random - Always outputs random "hashes", with a configurable digest_size
 * crc32 - CRC32 digest, 4 byte digest_size
 * adler32 - Adler-32 digest, 4 byte digest_size
+* fletcher16 - Fletcher 8-bit implementation, 2 byte digest_size
+* fletcher32 - Fletcher 16-bit implementation, 4 byte digest_size
+* fletcher64 - Fletcher 32-bit implementation, 8 byte digest_size
 * cksum - Unix cksum checksum, 4 byte digest_size
 * sysv - Unix System V checksum, 2 byte digest_size
 * bsd - BSD checksum, 2 byte digest_size
@@ -32,7 +35,8 @@ Unless stated, all digest outputs are big-endian (network byte order).
 '8c736521'
 
 >>> hashlib_additional.algorithms_available
-{'crc32', 'udp', 'null', 'adler32', 'twoping', 'cksum', 'random', 'bsd', 'sysv'}
+{'adler32', 'bsd', 'cksum', 'crc32', 'fletcher16', 'fletcher32',
+ 'fletcher64', 'null', 'random', 'sysv', 'twoping', 'udp'}
 
 >>> digest = hashlib_additional.twoping(b'bar')
 >>> digest.digest()
