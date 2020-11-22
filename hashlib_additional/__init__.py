@@ -29,7 +29,7 @@ import struct
 import zlib
 
 
-__version__ = "1.0.1"
+__version__ = "1.1"
 
 
 class HASH:
