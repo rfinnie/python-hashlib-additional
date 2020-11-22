@@ -28,6 +28,9 @@ clean:
 	$(PYTHON) setup.py clean
 	$(RM) -r build MANIFEST
 
+dist:
+	$(PYTHON) setup.py sdist bdist_wheel
+
 doc: README
 
 README: README.md
