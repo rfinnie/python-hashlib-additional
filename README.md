@@ -1,6 +1,7 @@
 # hashlib-additional - Additional hashlib-compatible hashing digests
 
-https://github.com/rfinnie/python-hashlib-additional
+* https://pypi.org/project/hashlib-additional/
+* https://github.com/rfinnie/python-hashlib-additional
 
 ## About
 
@@ -40,7 +41,7 @@ b'+\x9e'
 
 ## License
 
-Copyright (c) 2019 Ryan Finnie
+Copyright (c) 2019-2020 Ryan Finnie
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the

@@ -1,6 +1,6 @@
 ########################################################################
 # hashlib_additional Python library
-# Copyright (c) 2019 Ryan Finnie
+# Copyright (c) 2019-2020 Ryan Finnie
 #
 # Permission is hereby granted, free of charge, to any person obtaining
 # a copy of this software and associated documentation files (the
