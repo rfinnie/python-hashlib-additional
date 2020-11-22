@@ -6,11 +6,11 @@ import hashlib
 
 
 class BaseTest:
-    name = ''
-    empty_digest = b''
-    foo_digest = b''
-    foobar_digest = b''
-    large_digest = b''
+    name = ""
+    empty_digest = b""
+    foo_digest = b""
+    foobar_digest = b""
+    large_digest = b""
 
     def test_empty(self):
         self.assertEqual(
@@ -20,53 +20,53 @@ class BaseTest:
 
     def test_foo(self):
         self.assertEqual(
-            hashlib_additional.new(self.name, b'foo').digest(),
+            hashlib_additional.new(self.name, b"foo").digest(),
             self.foo_digest,
         )
 
     def test_foobar(self):
         self.assertEqual(
-            hashlib_additional.new(self.name, b'foobar').digest(),
+            hashlib_additional.new(self.name, b"foobar").digest(),
             self.foobar_digest,
         )
 
     def test_same(self):
-        digest = hashlib_additional.new(self.name, b'foobar')
+        digest = hashlib_additional.new(self.name, b"foobar")
         self.assertEqual(
             digest.digest(),
             digest.digest(),
         )
 
     def test_update(self):
-        digest = hashlib_additional.new(self.name, b'foo')
-        digest.update(b'bar')
+        digest = hashlib_additional.new(self.name, b"foo")
+        digest.update(b"bar")
         self.assertEqual(
             digest.digest(),
             self.foobar_digest,
         )
 
     def test_same_update_none(self):
-        digest = hashlib_additional.new(self.name, b'foobar')
+        digest = hashlib_additional.new(self.name, b"foobar")
         old_result = digest.digest()
-        digest.update(b'')
+        digest.update(b"")
         self.assertEqual(
             digest.digest(),
             old_result,
         )
 
     def test_copy_new_changed(self):
-        digest = hashlib_additional.new(self.name, b'foo')
+        digest = hashlib_additional.new(self.name, b"foo")
         digest_copy = digest.copy()
-        digest_copy.update(b'bar')
+        digest_copy.update(b"bar")
         self.assertEqual(
             digest_copy.digest(),
             self.foobar_digest,
         )
 
     def test_copy_old_unchanged(self):
-        digest = hashlib_additional.new(self.name, b'foo')
+        digest = hashlib_additional.new(self.name, b"foo")
         digest_copy = digest.copy()
-        digest_copy.update(b'bar')
+        digest_copy.update(b"bar")
         digest_copy.digest()
         self.assertEqual(
             digest.digest(),
@@ -75,7 +75,7 @@ class BaseTest:
 
     def test_direct(self):
         digest = getattr(hashlib_additional, self.name)()
-        digest.update(b'foo')
+        digest.update(b"foo")
         self.assertEqual(
             digest.digest(),
             self.foo_digest,
@@ -94,79 +94,79 @@ class BaseTest:
         )
 
 
-
 class TestAdler32(unittest.TestCase, BaseTest):
-    name = 'adler32'
-    empty_digest = b'\x00\x00\x00\x01'
-    foo_digest = b'\x02\x82\x01E'
-    foobar_digest = b'\x08\xab\x02z'
-    large_digest = b'l9\xbe\xe2'
+    name = "adler32"
+    empty_digest = b"\x00\x00\x00\x01"
+    foo_digest = b"\x02\x82\x01E"
+    foobar_digest = b"\x08\xab\x02z"
+    large_digest = b"l9\xbe\xe2"
+
 
 class TestBsd(unittest.TestCase, BaseTest):
-    name = 'bsd'
-    empty_digest = b'\x00\x00'
-    foo_digest = b'\x00\xc0'
-    foobar_digest = b'\x00\xd3'
-    large_digest = b'S\x85'
+    name = "bsd"
+    empty_digest = b"\x00\x00"
+    foo_digest = b"\x00\xc0"
+    foobar_digest = b"\x00\xd3"
+    large_digest = b"S\x85"
 
 
 class TestCksum(unittest.TestCase, BaseTest):
-    name = 'cksum'
-    empty_digest = b'\xff\xff\xff\xff'
-    foo_digest = b'\x93;\x9e\x91'
-    foobar_digest = b'\x9b]\x95\xd6'
-    large_digest = b'\xab\x1d\x12\xa7'
+    name = "cksum"
+    empty_digest = b"\xff\xff\xff\xff"
+    foo_digest = b"\x93;\x9e\x91"
+    foobar_digest = b"\x9b]\x95\xd6"
+    large_digest = b"\xab\x1d\x12\xa7"
 
 
 class TestCrc32(unittest.TestCase, BaseTest):
-    name = 'crc32'
-    empty_digest = b'\x00\x00\x00\x00'
-    foo_digest = b'\x8cse!'
-    foobar_digest = b'\x9e\xf6\x1f\x95'
-    large_digest = b'\xd6\xec\x16\xac'
+    name = "crc32"
+    empty_digest = b"\x00\x00\x00\x00"
+    foo_digest = b"\x8cse!"
+    foobar_digest = b"\x9e\xf6\x1f\x95"
+    large_digest = b"\xd6\xec\x16\xac"
 
 
 class TestNull(unittest.TestCase, BaseTest):
-    name = 'null'
-    empty_digest = b'\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00'
-    foo_digest = b'\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00'
-    foobar_digest = b'\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00'
-    large_digest = b'\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00'
+    name = "null"
+    empty_digest = b"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"
+    foo_digest = b"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"
+    foobar_digest = b"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"
+    large_digest = b"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"
 
     def test_variable_digest_size(self):
-        digest = hashlib_additional.new(self.name, b'foo', digest_size=3)
+        digest = hashlib_additional.new(self.name, b"foo", digest_size=3)
         self.assertEqual(
             digest.digest(),
-            b'\x00\x00\x00',
+            b"\x00\x00\x00",
         )
 
 
 class TestSysv(unittest.TestCase, BaseTest):
-    name = 'sysv'
-    empty_digest = b'\x00\x00'
-    foo_digest = b'\x01D'
-    foobar_digest = b'\x02y'
-    large_digest = b'\xbbo'
+    name = "sysv"
+    empty_digest = b"\x00\x00"
+    foo_digest = b"\x01D"
+    foobar_digest = b"\x02y"
+    large_digest = b"\xbbo"
 
 
 class TestTwoping(unittest.TestCase, BaseTest):
-    name = 'twoping'
-    empty_digest = b'\xff\xff'
-    foo_digest = b'*\x90'
-    foobar_digest = b'\xc8\xbb'
-    large_digest = b'A\x93'
+    name = "twoping"
+    empty_digest = b"\xff\xff"
+    foo_digest = b"*\x90"
+    foobar_digest = b"\xc8\xbb"
+    large_digest = b"A\x93"
 
 
 class TestUdp(unittest.TestCase, BaseTest):
-    name = 'udp'
-    empty_digest = b'\xff\xff'
-    foo_digest = b'o\xd5'
-    foobar_digest = b'D7'
-    large_digest = b'l\xbe'
+    name = "udp"
+    empty_digest = b"\xff\xff"
+    foo_digest = b"o\xd5"
+    foobar_digest = b"D7"
+    large_digest = b"l\xbe"
 
 
 class TestRandom(unittest.TestCase):
-    name = 'random'
+    name = "random"
 
     def test_empty(self):
         self.assertEqual(
@@ -176,19 +176,19 @@ class TestRandom(unittest.TestCase):
 
     def test_foo(self):
         self.assertEqual(
-            len(hashlib_additional.new(self.name, b'foo').digest()),
+            len(hashlib_additional.new(self.name, b"foo").digest()),
             16,
         )
 
     def test_same(self):
-        digest = hashlib_additional.new(self.name, b'foobar')
+        digest = hashlib_additional.new(self.name, b"foobar")
         self.assertEqual(
             digest.digest(),
             digest.digest(),
         )
 
     def test_variable_digest_size(self):
-        digest = hashlib_additional.new(self.name, b'foo', digest_size=3)
+        digest = hashlib_additional.new(self.name, b"foo", digest_size=3)
         self.assertEqual(
             len(digest.digest()),
             3,
@@ -196,7 +196,7 @@ class TestRandom(unittest.TestCase):
 
     def test_direct(self):
         digest = hashlib_additional.random()
-        digest.update(b'foo')
+        digest.update(b"foo")
         self.assertEqual(
             len(digest.digest()),
             16,
