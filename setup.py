@@ -8,7 +8,9 @@ assert sys.version_info > (3, 4)
 
 
 def read(filename):
-    return open(os.path.join(os.path.dirname(__file__), filename)).read()
+    return open(
+        os.path.join(os.path.dirname(__file__), filename), encoding="UTF-8"
+    ).read()
 
 
 __version__ = None
