@@ -539,21 +539,3 @@ def new(name, *args, **kwargs):
     if name not in algorithms_available:
         raise ValueError("unsupported hash type " + name)
     return __algorithm_map[name](*args, **kwargs)
-
-
-if __name__ == "__main__":
-    for name in sorted(algorithms_available):
-        h = new(name)
-        empty_hex = h.hexdigest()
-        h = new(name, b"foo")
-        initial_hex = h.hexdigest()
-        h.update(b"bar")
-        update_hex = h.hexdigest()
-        h = h.copy()
-        h.update(b"baz")
-        copy_hex = h.hexdigest()
-        print(
-            "{}: empty {}, initial {}, update {}, copy {}".format(
-                name, empty_hex, initial_hex, update_hex, copy_hex
-            )
-        )
