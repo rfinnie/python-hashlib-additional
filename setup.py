@@ -27,7 +27,8 @@ with open(
 setup(
     name="hashlib-additional",
     description="Additional hashlib-compatible hashing digests",
-    long_description=read("README"),
+    long_description=read("README.md"),
+    long_description_content_type="text/markdown",
     version=__version__,
     license="BSD",
     platforms=["Unix"],

@@ -1,5 +1,4 @@
 PYTHON := python3
-PANDOC := pandoc
 
 all: build
 
@@ -30,8 +29,3 @@ clean:
 
 dist:
 	$(PYTHON) setup.py sdist bdist_wheel
-
-doc: README
-
-README: README.md
-	$(PANDOC) -s -t plain -o $@ $<
