@@ -4,6 +4,7 @@
 # SPDX-FileCopyrightText: © 2019 Ryan Finnie <ryan@finnie.org>
 # SPDX-License-Identifier: MIT
 
+import io
 import unittest
 import hashlib_additional
 import hashlib
@@ -108,6 +109,18 @@ class BaseTest:
         self.assertEqual(
             len(digest.digest()),
             digest.digest_size,
+        )
+
+    def test_file_digest(self):
+        """
+        Test if file_digest, which expects a hashlib-like interface,
+        can actually use a hashlib-like interface
+        """
+        hash = getattr(hashlib_additional, self.name)
+        digest = hashlib.file_digest(io.BytesIO(b"foo"), hash)
+        self.assertEqual(
+            digest.digest(),
+            self.foo_digest,
         )
 
 
