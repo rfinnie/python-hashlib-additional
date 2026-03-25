@@ -9,7 +9,7 @@ import copy
 import random as _random
 import zlib
 
-__version__ = "1.1"
+__version__ = "1.2"
 
 
 def be_pack(value, byte_len):
