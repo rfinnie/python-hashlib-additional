@@ -526,6 +526,83 @@ class djb2(HASH):
         return be_pack(self._checksum, self.digest_size)
 
 
+class _FNV(HASH):
+    digest_size = 4
+    block_size = 1
+    version = "1a"
+    _prime = 0
+    _checksum = 0
+    _params = {
+        4: (2**24 + 2**8 + 0x93, 2166136261),
+        8: (2**40 + 2**8 + 0xB3, 14695981039346656037),
+        16: (2**88 + 2**8 + 0x3B, 144066263297769815596495629667062367629),
+        32: (
+            2**168 + 2**8 + 0x63,
+            100029257958052580907070968620625704837092796014241193945225284501741471925557,
+        ),
+        64: (
+            2**344 + 2**8 + 0x57,
+            (
+                9659
+                + 303129496669498009435400716310 * 10**120
+                + 466090418745672637896108374329 * 10**90
+                + 434462657994582932197716438449 * 10**60
+                + 813051892206539805784495328239 * 10**30
+                + 340083876191928701583869517785
+            ),
+        ),
+        128: (
+            2**680 + 2**8 + 0x8D,
+            (
+                14197795064947621 * 10**270
+                + 68722070641403218320880622795 * 10**240
+                + 441933960878474914617582723252 * 10**210
+                + 296732303717722150864096521202 * 10**180
+                + 355549365628174669108571814760 * 10**150
+                + 471015076148029755969804077320 * 10**120
+                + 157692458563003215304957150157 * 10**90
+                + 403644460363550505412711285966 * 10**60
+                + 361610267868082893823963790439 * 10**30
+                + 336411086884584107735010676915
+            ),
+        ),
+    }
+
+    def __init__(self, *args, digest_size=4):
+        if digest_size not in self._params:
+            raise ValueError("Invalid digest_size")
+        self.digest_size = digest_size
+        self._prime = self._params[self.digest_size][0]
+        if self.version != "0":
+            self._checksum = self._params[self.digest_size][1]
+        super().__init__(*args)
+
+    def update(self, data):
+        for ch in data:
+            if self.version == "1a":
+                self._checksum = ((ch ^ self._checksum) * self._prime) & (2 ** (8 * self.digest_size) - 1)
+            elif self.version in ("0", "1"):
+                self._checksum = ((self._checksum * self._prime) & (2 ** (8 * self.digest_size) - 1)) ^ ch
+
+    def digest(self):
+        return be_pack(self._checksum, self.digest_size)
+
+
+class fnv0(_FNV):
+    name = "fnv0"
+    version = "0"
+
+
+class fnv1(_FNV):
+    name = "fnv1"
+    version = "1"
+
+
+class fnv1a(_FNV):
+    name = "fnv1a"
+    version = "1a"
+
+
 class random(HASH):
     """Dummy random hash"""
 

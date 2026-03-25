@@ -243,6 +243,44 @@ class TestDjb2(unittest.TestCase, BaseTest):
     large_digest = b"\x76\x2c\x24\xb5"
 
 
+class TestFNV0(unittest.TestCase, BaseTest):
+    name = "fnv0"
+    empty_digest = b"\x00\x00\x00\x00"
+    foo_digest = b"\x8f\xfd\x6e\x28"
+    foo_hexdigest = "8ffd6e28"
+    foobar_digest = b"\xb7\x4b\xb5\xef"
+    large_digest = b"\xc7\x94\xe4\xa0"
+
+
+class TestFNV1(unittest.TestCase, BaseTest):
+    name = "fnv1"
+    empty_digest = b"\x81\x1c\x9d\xc5"
+    foo_digest = b"\x40\x8f\x5e\x13"
+    foo_hexdigest = "408f5e13"
+    foobar_digest = b"\x31\xf0\xb2\x62"
+    large_digest = b"\xd5\x9d\x63\xc5"
+
+    def test_large_digest_size(self):
+        digest = hashlib_additional.new(self.name, b"foo", digest_size=128)
+        self.assertEqual(
+            len(digest.digest()),
+            128,
+        )
+
+    def test_invalid_digest_size(self):
+        with self.assertRaises(ValueError):
+            hashlib_additional.new(self.name, digest_size=3)
+
+
+class TestFNV1a(unittest.TestCase, BaseTest):
+    name = "fnv1a"
+    empty_digest = b"\x81\x1c\x9d\xc5"
+    foo_digest = b"\xa9\xf3\x7e\xd7"
+    foo_hexdigest = "a9f37ed7"
+    foobar_digest = b"\xbf\x9c\xf9\x68"
+    large_digest = b"\x89\xd2\x64\xc5"
+
+
 class TestRandom(unittest.TestCase):
     name = "random"
 
@@ -294,6 +332,9 @@ class TestHashlibAdditional(unittest.TestCase):
                 "fletcher16",
                 "fletcher32",
                 "fletcher64",
+                "fnv0",
+                "fnv1",
+                "fnv1a",
                 "null",
                 "random",
                 "sdbm",
