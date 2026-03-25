@@ -7,10 +7,23 @@
 import codecs
 import copy
 import random as _random
-import struct
 import zlib
 
 __version__ = "1.1"
+
+
+def be_pack(value, byte_len):
+    """
+    Pack an arbitrary numeric value into a big-endian byte sequence
+    """
+
+    out = bytearray()
+    for i in range(byte_len):
+        out.append(value & 0xFF)
+        value = value >> 8
+    if value > 0:
+        raise OverflowError("Cannot fit value in byte_len")
+    return bytes(reversed(out))
 
 
 class HASH:
@@ -22,7 +35,7 @@ class HASH:
     name = "hash"
     digest_size = 0
     block_size = 0
-    _checksum = b""
+    _checksum = 0
 
     def __init__(self, data=b"", **kwargs):
         self.update(data)
@@ -33,7 +46,7 @@ class HASH:
 
     def digest(self):
         """Return the digest value as a string of binary data."""
-        return self._checksum
+        return be_pack(self._checksum & (2 ** (self.digest_size * 8) - 1), self.digest_size)
 
     def hexdigest(self):
         """Return the digest value as a string of hexadecimal digits."""
@@ -48,20 +61,15 @@ class crc32(HASH):
     name = "crc32"
     digest_size = 4
     block_size = 1
-    _checksum = 0
 
     def update(self, data):
         self._checksum = zlib.crc32(data, self._checksum)
-
-    def digest(self):
-        return struct.pack(b">I", (self._checksum & 0xFFFFFFFF))
 
 
 class bsd(HASH):
     name = "bsd"
     digest_size = 2
     block_size = 1
-    _checksum = 0
 
     def update(self, data):
         for ch in data:
@@ -69,15 +77,11 @@ class bsd(HASH):
             self._checksum += ch
             self._checksum &= 0xFFFF
 
-    def digest(self):
-        return struct.pack(b">H", self._checksum)
-
 
 class sysv(HASH):
     name = "sysv"
     digest_size = 2
     block_size = 1
-    _checksum = 0
 
     def update(self, data):
         for ch in data:
@@ -86,8 +90,7 @@ class sysv(HASH):
 
     def digest(self):
         r = (self._checksum & 0xFFFF) + ((self._checksum & 0xFFFFFFFF) >> 16)
-        checksum = (r & 0xFFFF) + (r >> 16)
-        return struct.pack(b">H", checksum)
+        return be_pack((r & 0xFFFF) + (r >> 16), self.digest_size)
 
 
 class twoping(HASH):
@@ -101,7 +104,6 @@ class twoping(HASH):
     digest_size = 2
     block_size = 2
     _held_data = b""
-    _checksum = 0
 
     def update(self, data):
         data = self._held_data + data
@@ -128,7 +130,7 @@ class twoping(HASH):
         if checksum == 0:
             checksum = 0xFFFF
 
-        return struct.pack(b">H", checksum)
+        return be_pack(checksum, self.digest_size)
 
 
 class udp(HASH):
@@ -136,7 +138,6 @@ class udp(HASH):
     digest_size = 2
     block_size = 2
     _held_data = b""
-    _checksum = 0
 
     def _carry_around_add(self, a, b):
         c = a + b
@@ -163,7 +164,7 @@ class udp(HASH):
         if checksum == 0:
             checksum = 0xFFFF
 
-        return struct.pack(b">H", checksum)
+        return be_pack(checksum, self.digest_size)
 
 
 class adler32(HASH):
@@ -175,15 +176,11 @@ class adler32(HASH):
     def update(self, data):
         self._checksum = zlib.adler32(data, self._checksum)
 
-    def digest(self):
-        return struct.pack(b">I", (self._checksum & 0xFFFFFFFF))
-
 
 class cksum(HASH):
     name = "cksum"
     digest_size = 4
     block_size = 1
-    _checksum = 0
     _data_len = 0
 
     _table = (
@@ -456,7 +453,7 @@ class cksum(HASH):
         while i:
             checksum = ((checksum << 8) & 0xFFFFFFFF) ^ self._table[(checksum >> 24) ^ (i & 0xFF)]
             i = i >> 8
-        return struct.pack(b">I", (~checksum & 0xFFFFFFFF))
+        return be_pack(~checksum & 0xFFFFFFFF, self.digest_size)
 
 
 class Fletcher(HASH):
@@ -490,13 +487,7 @@ class Fletcher(HASH):
 
         assert self.digest_size in (2, 4, 8)
         assert self.digest_size == self.block_size * 2
-        if self.digest_size == 2:
-            pack_format = b">H"
-        elif self.digest_size == 4:
-            pack_format = b">I"
-        elif self.digest_size == 8:
-            pack_format = b">Q"
-        return struct.pack(pack_format, ((self._checksum2 << (8 * self.block_size)) | self._checksum1))
+        return be_pack(((self._checksum2 << (8 * self.block_size)) | self._checksum1), self.digest_size)
 
 
 class fletcher16(Fletcher):
@@ -521,14 +512,13 @@ class sdbm(HASH):
     name = "sdbm"
     digest_size = 4
     block_size = 1
-    _checksum = 0
 
     def update(self, data):
         for ch in data:
             self._checksum = ((self._checksum << 16) + (self._checksum << 6) + ch - self._checksum) & 0xFFFFFFFF
 
     def digest(self):
-        return struct.pack(b">I", self._checksum)
+        return be_pack(self._checksum, self.digest_size)
 
 
 class djb2(HASH):
@@ -542,7 +532,7 @@ class djb2(HASH):
             self._checksum = (((self._checksum << 5) + self._checksum) + ch) & 0xFFFFFFFF
 
     def digest(self):
-        return struct.pack(b">I", self._checksum)
+        return be_pack(self._checksum, self.digest_size)
 
 
 class random(HASH):
@@ -551,7 +541,6 @@ class random(HASH):
     name = "random"
     digest_size = 16
     block_size = 1
-    _checksum = b""
 
     def __init__(self, *args, digest_size=16):
         self.digest_size = digest_size
@@ -559,7 +548,7 @@ class random(HASH):
 
     def update(self, data):
         if data or not self._checksum:
-            self._checksum = bytes([_random.randint(0, 255) for x in range(self.digest_size)])
+            self._checksum = _random.randint(0, 2 ** (self.digest_size * 8) - 1)
 
 
 class null(HASH):
@@ -568,11 +557,9 @@ class null(HASH):
     name = "null"
     digest_size = 16
     block_size = 1
-    _checksum = b""
 
     def __init__(self, *args, digest_size=16):
         self.digest_size = digest_size
-        self._checksum = bytes(digest_size)
         super().__init__(*args)
 
 

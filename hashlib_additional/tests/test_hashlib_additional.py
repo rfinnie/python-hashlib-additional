@@ -318,3 +318,15 @@ class TestHashlibAdditional(unittest.TestCase):
     def test_new_invalid_algorithm(self):
         with self.assertRaises(ValueError):
             hashlib_additional.new("badalgorithm")
+
+
+class TestBePack(unittest.TestCase):
+    def test_pack(self):
+        self.assertEqual(hashlib_additional.be_pack(12345, 2), b"\x30\x39")
+
+    def test_pad(self):
+        self.assertEqual(hashlib_additional.be_pack(12345, 5), b"\x00\x00\x00\x30\x39")
+
+    def test_overflow(self):
+        with self.assertRaises(OverflowError):
+            hashlib_additional.be_pack(12345, 1)
