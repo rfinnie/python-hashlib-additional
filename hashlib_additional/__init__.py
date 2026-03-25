@@ -75,7 +75,7 @@ class bsd(HASH):
 
 class sysv(HASH):
     name = "sysv"
-    digest_size = 4
+    digest_size = 2
     block_size = 1
     _checksum = 0
 

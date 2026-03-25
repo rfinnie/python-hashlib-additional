@@ -103,6 +103,13 @@ class BaseTest:
             self.large_digest,
         )
 
+    def test_digest_size(self):
+        digest = hashlib_additional.new(self.name)
+        self.assertEqual(
+            len(digest.digest()),
+            digest.digest_size,
+        )
+
 
 class TestAdler32(unittest.TestCase, BaseTest):
     name = "adler32"
