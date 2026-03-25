@@ -225,6 +225,24 @@ class TestFletcher64(unittest.TestCase, BaseTest):
     large_digest = b"L\xa6\x97&\xf5fwW"
 
 
+class TestSdbm(unittest.TestCase, BaseTest):
+    name = "sdbm"
+    empty_digest = b"\x00\x00\x00\x00"
+    foo_digest = b"\x32\xa9\x49\x26"
+    foo_hexdigest = "32a94926"
+    foobar_digest = b"\xa6\x43\x7b\x0d"
+    large_digest = b"\x9f\x8a\xdb\x84"
+
+
+class TestDjb2(unittest.TestCase, BaseTest):
+    name = "djb2"
+    empty_digest = b"\x00\x00\x15\x05"
+    foo_digest = b"\x0b\x88\x73\x89"
+    foo_hexdigest = "0b887389"
+    foobar_digest = b"\xfd\xe4\x60\xbe"
+    large_digest = b"\x76\x2c\x24\xb5"
+
+
 class TestRandom(unittest.TestCase):
     name = "random"
 
@@ -272,11 +290,13 @@ class TestHashlibAdditional(unittest.TestCase):
                 "bsd",
                 "cksum",
                 "crc32",
+                "djb2",
                 "fletcher16",
                 "fletcher32",
                 "fletcher64",
                 "null",
                 "random",
+                "sdbm",
                 "sysv",
                 "twoping",
                 "udp",

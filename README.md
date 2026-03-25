@@ -20,6 +20,8 @@ It implements the following digests:
 * bsd - BSD checksum, 2 byte digest_size
 * udp - UDP checksum, 2 byte digest_size
 * twoping - 2ping checksum, 2 byte digest_size
+* sdbm - sdbm (ndbm reimplementation) checksum, 4 byte digest_size
+* djb2 - Daniel J. Bernstein's checksum, 4 byte digest_size
 
 Unless stated, all digest outputs are big-endian (network byte order).
 

@@ -517,6 +517,34 @@ class fletcher64(Fletcher):
     block_size = 4
 
 
+class sdbm(HASH):
+    name = "sdbm"
+    digest_size = 4
+    block_size = 1
+    _checksum = 0
+
+    def update(self, data):
+        for ch in data:
+            self._checksum = ((self._checksum << 16) + (self._checksum << 6) + ch - self._checksum) & 0xFFFFFFFF
+
+    def digest(self):
+        return struct.pack(b">I", self._checksum)
+
+
+class djb2(HASH):
+    name = "djb2"
+    digest_size = 4
+    block_size = 1
+    _checksum = 5381
+
+    def update(self, data):
+        for ch in data:
+            self._checksum = (((self._checksum << 5) + self._checksum) + ch) & 0xFFFFFFFF
+
+    def digest(self):
+        return struct.pack(b">I", self._checksum)
+
+
 class random(HASH):
     """Dummy random hash"""
 
