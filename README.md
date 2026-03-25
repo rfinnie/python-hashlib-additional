@@ -41,28 +41,41 @@ Unless stated, all digest outputs are big-endian (network byte order).
 >>> digest = hashlib_additional.twoping(b'bar')
 >>> digest.digest()
 b'+\x9e'
+
+>>> import io
+>>> import hashlib
+>>> digest = hashlib.file_digest(io.BytesIO(b'bar'), hashlib_additional.twoping)
+>>> digest.digest()
+b'+\x9e'
 ```
 
 ## License
 
-Copyright (c) 2019-2020 Ryan Finnie
+Copyright © 2019 Ryan Finnie <ryan@finnie.org>
 
-Permission is hereby granted, free of charge, to any person obtaining
-a copy of this software and associated documentation files (the
-"Software"), to deal in the Software without restriction, including
+Permission is hereby granted, free of charge, to any person obtaining a
+copy of this software and associated documentation files (the
+“Software”), to deal in the Software without restriction, including
 without limitation the rights to use, copy, modify, merge, publish,
 distribute, sublicense, and/or sell copies of the Software, and to
 permit persons to whom the Software is furnished to do so, subject to
 the following conditions:
 
-The above copyright notice and this permission notice shall be
-included in all copies or substantial portions of the Software.
+The above copyright notice and this permission notice shall be included
+in all copies or substantial portions of the Software.
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS
+OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
 IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
 CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
 TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+This document is provided under the following license:
+
+    SPDX-PackageName: python-hashlib-additional
+    SPDX-PackageSupplier: Ryan Finnie <ryan@finnie.org>
+    SPDX-PackageDownloadLocation: https://github.com/rfinnie/python-hashlib-additional
+    SPDX-FileCopyrightText: © 2019 Ryan Finnie <ryan@finnie.org>
+    SPDX-License-Identifier: MIT

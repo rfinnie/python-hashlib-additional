@@ -1,5 +1,0 @@
-include *.md
-include Makefile
-include requirements.txt
-include tox.ini
-include tests/*.py

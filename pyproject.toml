@@ -1,0 +1,39 @@
+# SPDX-PackageName: python-hashlib-additional
+# SPDX-PackageSupplier: Ryan Finnie <ryan@finnie.org>
+# SPDX-PackageDownloadLocation: https://github.com/rfinnie/python-hashlib-additional
+# SPDX-FileCopyrightText: © 2019 Ryan Finnie <ryan@finnie.org>
+# SPDX-License-Identifier: MIT
+
+[project]
+name = "hashlib-additional"
+authors = [
+    {name = "Ryan Finnie", email = "ryan@finnie.org"},
+]
+description = "Additional hashlib-compatible hashing digests"
+readme = "README.md"
+requires-python = ">=3.4"
+license = "MIT"
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: Implementation :: PyPy",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+dependencies = []
+dynamic = ["version"]
+
+[project.urls]
+Homepage = "https://github.com/rfinnie/python-hashlib-additional"
+
+[tool.setuptools.packages.find]
+include = [
+    "hashlib_additional",
+    "hashlib_additional.tests",
+]
+
+[tool.setuptools.dynamic]
+version = {attr = "hashlib_additional.__version__"}
+
+[tool.black]
+line-length = 132

@@ -1,33 +1,14 @@
-########################################################################
-# hashlib_additional Python library
-# Copyright (c) 2019-2020 Ryan Finnie
-#
-# Permission is hereby granted, free of charge, to any person obtaining
-# a copy of this software and associated documentation files (the
-# "Software"), to deal in the Software without restriction, including
-# without limitation the rights to use, copy, modify, merge, publish,
-# distribute, sublicense, and/or sell copies of the Software, and to
-# permit persons to whom the Software is furnished to do so, subject to
-# the following conditions:
-#
-# The above copyright notice and this permission notice shall be
-# included in all copies or substantial portions of the Software.
-#
-# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-# EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-# MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-# IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
-# CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
-# TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
-# SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-########################################################################
+# SPDX-PackageName: python-hashlib-additional
+# SPDX-PackageSupplier: Ryan Finnie <ryan@finnie.org>
+# SPDX-PackageDownloadLocation: https://github.com/rfinnie/python-hashlib-additional
+# SPDX-FileCopyrightText: © 2019 Ryan Finnie <ryan@finnie.org>
+# SPDX-License-Identifier: MIT
 
 import codecs
 import copy
 import random as _random
 import struct
 import zlib
-
 
 __version__ = "1.1"
 
@@ -171,9 +152,7 @@ class udp(HASH):
             self._held_data = b""
 
         for i in range(0, len(data), 2):
-            self._checksum = self._carry_around_add(
-                self._checksum, (data[i] + (data[i + 1] << 8))
-            )
+            self._checksum = self._carry_around_add(self._checksum, (data[i] + (data[i + 1] << 8)))
 
     def digest(self):
         checksum = self._checksum
@@ -468,18 +447,14 @@ class cksum(HASH):
 
     def update(self, data):
         for c in data:
-            self._checksum = ((self._checksum << 8) & 0xFFFFFFFF) ^ self._table[
-                (self._checksum >> 24) ^ c
-            ]
+            self._checksum = ((self._checksum << 8) & 0xFFFFFFFF) ^ self._table[(self._checksum >> 24) ^ c]
         self._data_len += len(data)
 
     def digest(self):
         checksum = self._checksum
         i = self._data_len
         while i:
-            checksum = ((checksum << 8) & 0xFFFFFFFF) ^ self._table[
-                (checksum >> 24) ^ (i & 0xFF)
-            ]
+            checksum = ((checksum << 8) & 0xFFFFFFFF) ^ self._table[(checksum >> 24) ^ (i & 0xFF)]
             i = i >> 8
         return struct.pack(b">I", (~checksum & 0xFFFFFFFF))
 
@@ -521,9 +496,7 @@ class Fletcher(HASH):
             pack_format = b">I"
         elif self.digest_size == 8:
             pack_format = b">Q"
-        return struct.pack(
-            pack_format, ((self._checksum2 << (8 * self.block_size)) | self._checksum1)
-        )
+        return struct.pack(pack_format, ((self._checksum2 << (8 * self.block_size)) | self._checksum1))
 
 
 class fletcher16(Fletcher):
@@ -558,9 +531,7 @@ class random(HASH):
 
     def update(self, data):
         if data or not self._checksum:
-            self._checksum = bytes(
-                [_random.randint(0, 255) for x in range(self.digest_size)]
-            )
+            self._checksum = bytes([_random.randint(0, 255) for x in range(self.digest_size)])
 
 
 class null(HASH):
@@ -579,7 +550,7 @@ class null(HASH):
 
 __algorithm_map = {}
 for obj in copy.copy(vars()).values():
-    if type(obj) == type(HASH) and issubclass(obj, HASH) and obj.name != "hash":
+    if type(obj) is type(HASH) and issubclass(obj, HASH) and obj.name != "hash":
         __algorithm_map[obj.name] = obj
 
 # For the moment, everything can be done using stdlib,
@@ -587,12 +558,7 @@ for obj in copy.copy(vars()).values():
 algorithms_available = set(__algorithm_map.keys())
 algorithms_guaranteed = algorithms_available
 
-__all__ = tuple(
-    set(
-        list(algorithms_available)
-        + ["new", "algorithms_available", "algorithms_guaranteed"]
-    )
-)
+__all__ = tuple(set(list(algorithms_available) + ["new", "algorithms_available", "algorithms_guaranteed"]))
 
 
 def new(name, *args, **kwargs):
