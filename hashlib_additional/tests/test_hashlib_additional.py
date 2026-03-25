@@ -112,7 +112,8 @@ class BaseTest:
             digest.digest_size,
         )
 
-    def test_file_digest(self):
+    @unittest.skipUnless(hasattr(hashlib, "file_digest"), "Older stdlib")
+    def test_file_digest(self):  # pragma: no cover
         """
         Test if file_digest, which expects a hashlib-like interface,
         can actually use a hashlib-like interface
