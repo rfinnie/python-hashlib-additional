@@ -5,9 +5,10 @@
 # SPDX-License-Identifier: MIT
 
 import io
-import unittest
-import hashlib_additional
 import hashlib
+import unittest
+
+import hashlib_additional
 
 
 class BaseTest:
