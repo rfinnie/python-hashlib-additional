@@ -34,7 +34,7 @@ class HASH:
 
     name = "hash"
     digest_size = 0
-    block_size = 0
+    block_size = 1
     _checksum = 0
 
     def __init__(self, data=b"", **kwargs):
@@ -60,7 +60,6 @@ class HASH:
 class crc32(HASH):
     name = "crc32"
     digest_size = 4
-    block_size = 1
 
     def update(self, data):
         self._checksum = zlib.crc32(data, self._checksum)
@@ -69,7 +68,6 @@ class crc32(HASH):
 class bsd(HASH):
     name = "bsd"
     digest_size = 2
-    block_size = 1
 
     def update(self, data):
         for ch in data:
@@ -81,7 +79,6 @@ class bsd(HASH):
 class sysv(HASH):
     name = "sysv"
     digest_size = 2
-    block_size = 1
 
     def update(self, data):
         for ch in data:
@@ -170,7 +167,6 @@ class udp(HASH):
 class adler32(HASH):
     name = "adler32"
     digest_size = 4
-    block_size = 1
     _checksum = 1
 
     def update(self, data):
@@ -180,7 +176,6 @@ class adler32(HASH):
 class cksum(HASH):
     name = "cksum"
     digest_size = 4
-    block_size = 1
     _data_len = 0
 
     _table = (
@@ -459,7 +454,6 @@ class cksum(HASH):
 class Fletcher(HASH):
     _held_data = b""
     digest_size = 2
-    block_size = 1
     _checksum1 = 0
     _checksum2 = 0
 
@@ -493,7 +487,6 @@ class Fletcher(HASH):
 class fletcher16(Fletcher):
     name = "fletcher16"
     digest_size = 2
-    block_size = 1
 
 
 class fletcher32(Fletcher):
@@ -511,7 +504,6 @@ class fletcher64(Fletcher):
 class sdbm(HASH):
     name = "sdbm"
     digest_size = 4
-    block_size = 1
 
     def update(self, data):
         for ch in data:
@@ -524,7 +516,6 @@ class sdbm(HASH):
 class djb2(HASH):
     name = "djb2"
     digest_size = 4
-    block_size = 1
     _checksum = 5381
 
     def update(self, data):
@@ -540,7 +531,6 @@ class random(HASH):
 
     name = "random"
     digest_size = 16
-    block_size = 1
 
     def __init__(self, *args, digest_size=16):
         self.digest_size = digest_size
@@ -556,7 +546,6 @@ class null(HASH):
 
     name = "null"
     digest_size = 16
-    block_size = 1
 
     def __init__(self, *args, digest_size=16):
         self.digest_size = digest_size
