@@ -1,5 +1,8 @@
 # hashlib-additional - Additional hashlib-compatible hashing digests
 
+[![Git forge repository](https://img.shields.io/badge/git-forge-orange?logo=forgejo)](https://forge.colobox.com/rfinnie/python-hashlib-additional)
+[![CI pipeline status](https://woodpecker.colobox.com/api/badges/50/status.svg)](https://woodpecker.colobox.com/repos/50)
+
 * https://pypi.org/project/hashlib-additional/
 * https://forge.colobox.com/rfinnie/python-hashlib-additional
 
